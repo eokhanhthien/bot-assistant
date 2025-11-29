@@ -1,0 +1,5 @@
+{
+  "name": "VietinBank Virtual Assistant",
+  "description": "A static rule-based chatbot for customer support guidance using pre-defined knowledge bases (Slides, Videos, Text).",
+  "requestFramePermissions": []
+}
