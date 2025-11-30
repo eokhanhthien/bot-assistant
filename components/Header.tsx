@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
         </div>
         
         {/* Title */}
-        <h1 className="text-vietin-dark font-semibold text-lg md:text-xl leading-tight">
+        <h1 className="text-vietin-dark font-semibold text-sm md:text-lg lg:text-xl leading-tight">
           {APP_CONFIG.botName}
         </h1>
       </div>

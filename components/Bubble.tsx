@@ -62,17 +62,31 @@ export const Bubble: React.FC<BubbleProps> = ({ content, sender, type, title, ex
           {/* Video Link Button */}
           {type === MessageType.VIDEO_LINK && (
             <div className="mt-1">
-               <a 
-                 href={content} 
-                 target="_blank" 
-                 rel="noopener noreferrer"
-                 className="inline-flex items-center gap-2 px-5 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
-               >
-                 <div className="w-6 h-5 bg-white rounded flex items-center justify-center">
-                    <div className="w-0 h-0 border-l-[6px] border-l-red-600 border-y-[4px] border-y-transparent ml-0.5"></div>
-                 </div>
-                 {title === '7. Chỉ đường đến PGD & ATM' ? 'Mở bản đồ' : 'Xem video hướng dẫn'}
-               </a>
+              {title === '7. Chỉ đường đến PGD & ATM' ? (
+                // Map Button - Blue color with map icon
+                <a 
+                  href={content} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-vietin-dark hover:bg-[#004a7a] text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
+                >
+                  <i className="fas fa-map-marker-alt text-lg"></i>
+                  Mở bản đồ
+                </a>
+              ) : (
+                // Video Button - Red color with play icon
+                <a 
+                  href={content} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
+                >
+                  <div className="w-6 h-5 bg-white rounded flex items-center justify-center">
+                     <div className="w-0 h-0 border-l-[6px] border-l-red-600 border-y-[4px] border-y-transparent ml-0.5"></div>
+                  </div>
+                  Xem video hướng dẫn
+                </a>
+              )}
             </div>
           )}
 
