@@ -276,9 +276,9 @@ const App: React.FC = () => {
       <footer className="fixed bottom-0 left-0 w-full z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
         <div className="max-w-3xl mx-auto">
           
-          {/* Toggle Button - Top - Compact with Glass Effect */}
+          {/* Toggle Button - Top - Compact with Glass Effect - No bottom padding */}
           {isControlsExpanded && (
-            <div className="flex justify-center py-1 bg-white/50">
+            <div className="flex justify-center pt-1 bg-white/50">
               <button 
                 onClick={() => setIsControlsExpanded(false)}
                 className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200"
@@ -305,9 +305,9 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Expand Button - Show when collapsed - Compact with Glass Effect */}
+          {/* Expand Button - Show when collapsed - Compact with Glass Effect - No bottom padding */}
           {!isControlsExpanded && (
-            <div className="flex justify-center py-1 bg-white/50">
+            <div className="flex justify-center pt-1 bg-white/50">
               <button 
                 onClick={() => setIsControlsExpanded(true)}
                 className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200 animate-bounce"
@@ -317,8 +317,8 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {/* Input Box - Always Visible */}
-          <div className="p-3 bg-white/50">
+          {/* Input Box - Always Visible - No top padding */}
+          <div className="px-3 pb-3 bg-white/50">
             <div className="flex items-center gap-2 max-w-3xl mx-auto">
               <input
                 type="text"
@@ -326,7 +326,7 @@ const App: React.FC = () => {
                 onChange={(e) => setUserInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Nhập tin nhắn của bạn..."
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-vietin-dark focus:border-transparent text-sm"
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-vietin-dark focus:border-transparent text-base"
               />
               <button
                 onClick={handleSendMessage}
