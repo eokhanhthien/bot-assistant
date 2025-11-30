@@ -40,7 +40,7 @@ export const KNOWLEDGE_BASE: Record<string, KnowledgeItem> = {
       { step: "B7", content: "Nhập Soft OTP sau đó Bấm **XÁC NHẬN & HOÀN TẤT**" },
       { step: "B8", content: "Bấm **ĐỒNG Ý** để hoàn thành kích hoạt thẻ và đổi mã PIN" }
     ],
-    videoLink: "https://youtube.com/shorts/4A7eB9eIT-Y"
+    videoLink: "https://www.youtube.com/watch?v=acdT3KxET40"
   },
   "quenMatKhau": {
     id: "quenMatKhau",
@@ -98,15 +98,21 @@ export const KNOWLEDGE_BASE: Record<string, KnowledgeItem> = {
 **4. Liên hệ ngay khi phát hiện bất thường:**
 - Gọi hotline 1900 558 868 hoặc liên hệ chi nhánh gần nhất`
   },
+  "Alilas": {
+      id: "Alilas",
+      title: "7. Cài đặt Alilas",
+      content: "Quý khách có thể xem hướng dẫn cài đặt **ALILAS** dưới đây:",
+      videoLink: "https://www.youtube.com/watch?v=idpNaKkYvMs" 
+  },
   "chiDuong": {
       id: "chiDuong",
-      title: "7. Chỉ đường đến PGD & ATM",
+      title: "8. Chỉ đường đến PGD & ATM",
       content: "Quý khách có thể xem bản đồ và chỉ đường tới PGD & ATM dưới đây:",
-      videoLink: "https://eokhanhthien.github.io/atm-location/" // Using map link logic but as a 'link' type
+      mapLink: "https://eokhanhthien.github.io/atm-location/"
   },
   "chuyenVien": {
       id: "chuyenVien",
-      title: "8. Gặp chuyên viên tư vấn",
+      title: "9. Gặp chuyên viên tư vấn",
       content: APP_CONFIG.contactInfo
   }
 };

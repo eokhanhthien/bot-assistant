@@ -10,6 +10,7 @@ const App: React.FC = () => {
   const [flowState, setFlowState] = useState<FlowState>(FlowState.SHOWING_MENU);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const hasInitialized = useRef(false); // Add flag to prevent double initialization
 
   // Helper to add messages
   const addMessage = (content: string, sender: Sender, type: MessageType = MessageType.TEXT, title?: string, extraData?: any) => {
@@ -35,6 +36,10 @@ const App: React.FC = () => {
 
   // Initial Greeting
   useEffect(() => {
+    // Prevent double initialization in StrictMode
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     const initChat = async () => {
       setIsTyping(true);
       await new Promise(r => setTimeout(r, 600)); 
@@ -93,6 +98,12 @@ const App: React.FC = () => {
        if (option.videoLink) {
          await new Promise(r => setTimeout(r, 800));
          addMessage(option.videoLink, Sender.BOT, MessageType.VIDEO_LINK, option.title);
+       }
+
+       // Map Link
+       if (option.mapLink) {
+         await new Promise(r => setTimeout(r, 800));
+         addMessage(option.mapLink, Sender.BOT, MessageType.MAP_LINK, option.title);
        }
        
        setIsTyping(false);

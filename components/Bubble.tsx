@@ -30,6 +30,13 @@ export const Bubble: React.FC<BubbleProps> = ({ content, sender, type, title, ex
     ));
   };
 
+  // Extract YouTube video ID from URL
+  const getYouTubeVideoId = (url: string): string | null => {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
   return (
     <div className={`flex w-full ${isBot ? 'justify-start' : 'justify-end'} mb-4 animate-fade-in-up`}>
       <div className={`flex flex-col max-w-[90%] md:max-w-[85%] ${isBot ? 'items-start' : 'items-end'}`}>
@@ -62,31 +69,56 @@ export const Bubble: React.FC<BubbleProps> = ({ content, sender, type, title, ex
           {/* Video Link Button */}
           {type === MessageType.VIDEO_LINK && (
             <div className="mt-1">
-              {title === '7. Chỉ đường đến PGD & ATM' ? (
-                // Map Button - Blue color with map icon
-                <a 
-                  href={content} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-vietin-dark hover:bg-[#004a7a] text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
-                >
-                  <i className="fas fa-map-marker-alt text-lg"></i>
-                  Mở bản đồ
-                </a>
-              ) : (
-                // Video Button - Red color with play icon
-                <a 
-                  href={content} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
-                >
-                  <div className="w-6 h-5 bg-white rounded flex items-center justify-center">
-                     <div className="w-0 h-0 border-l-[6px] border-l-red-600 border-y-[4px] border-y-transparent ml-0.5"></div>
+              {/* Video Button with Thumbnail */}
+              <a 
+                href={content} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="block group"
+              >
+                {/* Thumbnail Container */}
+                <div className="relative rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+                  {/* YouTube Thumbnail */}
+                  <img 
+                    src={`https://img.youtube.com/vi/${getYouTubeVideoId(content)}/maxresdefault.jpg`}
+                    alt="Video thumbnail"
+                    className="w-full aspect-video object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${getYouTubeVideoId(content)}/hqdefault.jpg`;
+                    }}
+                  />
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-all">
+                    <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                      <div className="w-0 h-0 border-l-[20px] border-l-white border-y-[12px] border-y-transparent ml-1"></div>
+                    </div>
                   </div>
-                  Xem video hướng dẫn
-                </a>
-              )}
+
+                  {/* Video Title Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3">
+                    <p className="text-white font-semibold text-sm flex items-center gap-2">
+                      <i className="fas fa-play-circle text-red-600"></i>
+                      Xem video hướng dẫn
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          )}
+
+          {/* Map Link Button */}
+          {type === MessageType.MAP_LINK && (
+            <div className="mt-1">
+              <a 
+                href={content} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-vietin-dark hover:bg-[#004a7a] text-white rounded-lg font-semibold shadow-md transition-transform hover:-translate-y-0.5"
+              >
+                <i className="fas fa-map-marker-alt text-lg"></i>
+                Mở bản đồ
+              </a>
             </div>
           )}
 

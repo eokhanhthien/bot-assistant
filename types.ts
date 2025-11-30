@@ -1,10 +1,10 @@
 export enum MessageType {
-  TEXT = 'text',
-  EMBED = 'embed',
-  IMAGE = 'image',
-  STEPS = 'steps',
-  SLIDES = 'slides',
-  VIDEO_LINK = 'video_link'
+  TEXT = 'TEXT',
+  STEPS = 'STEPS',
+  VIDEO_LINK = 'VIDEO_LINK',
+  MAP_LINK = 'MAP_LINK',
+  SLIDES = 'SLIDES',
+  IMAGE = 'IMAGE'
 }
 
 export enum Sender {
@@ -21,19 +21,20 @@ export interface ChatMessage {
   id: string;
   sender: Sender;
   type: MessageType;
-  content: string; // Text content, or JSON string for complex objects
+  content: string;
   title?: string;
-  extraData?: any; // For slidesId, totalSlides, steps array, etc.
+  extraData?: any;
 }
 
 export interface KnowledgeItem {
   id: string;
   title: string;
-  content?: string; // Intro text
+  content?: string;
   steps?: Step[];
   slidesId?: string;
   totalSlides?: number;
   videoLink?: string;
+  mapLink?: string;
 }
 
 export enum FlowState {
