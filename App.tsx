@@ -213,8 +213,8 @@ const App: React.FC = () => {
       </main>
 
       {/* Sticky Bottom Controls */}
-      <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 shadow-lg z-40">
-        <div className="max-w-3xl mx-auto">
+      <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-40 max-h-[50vh] overflow-y-auto scrollbar-hide shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+        <div className="max-w-3xl mx-auto p-4">
           <Controls 
             flowState={flowState}
             onOptionSelect={handleOptionSelect}
