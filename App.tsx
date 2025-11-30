@@ -9,10 +9,19 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [flowState, setFlowState] = useState<FlowState>(FlowState.SHOWING_MENU);
   const [isTyping, setIsTyping] = useState(false);
-  const [isControlsExpanded, setIsControlsExpanded] = useState(true); // New state for controls visibility
-  const [userInput, setUserInput] = useState(''); // New state for user input
+  // Load initial state from localStorage, default to true if not found
+  const [isControlsExpanded, setIsControlsExpanded] = useState<boolean>(() => {
+    const saved = localStorage.getItem('controlsExpanded');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+  const [userInput, setUserInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const hasInitialized = useRef(false); // Add flag to prevent double initialization
+  const hasInitialized = useRef(false);
+
+  // Save to localStorage whenever state changes
+  useEffect(() => {
+    localStorage.setItem('controlsExpanded', JSON.stringify(isControlsExpanded));
+  }, [isControlsExpanded]);
 
   // Helper to add messages
   const addMessage = (content: string, sender: Sender, type: MessageType = MessageType.TEXT, title?: string, extraData?: any) => {
@@ -177,12 +186,57 @@ const App: React.FC = () => {
     
     // Add user message
     addMessage(userInput, Sender.USER);
+    const userQuery = userInput.toLowerCase().trim();
     setUserInput('');
     
-    // Bot auto-reply (you can customize this logic)
-    simulateBotTyping(() => {
-      addMessage("Cảm ơn Quý khách đã gửi tin nhắn. Em đang xử lý yêu cầu của Quý khách.", Sender.BOT);
-    });
+    // Simple keyword matching to find relevant knowledge item
+    const matchedItem = findBestMatch(userQuery);
+    
+    if (matchedItem) {
+      // Found a matching knowledge item, trigger it
+      setTimeout(() => {
+        handleOptionSelect(matchedItem.id);
+      }, 500);
+    } else {
+      // No match found, generic response
+      simulateBotTyping(() => {
+        addMessage("Em xin lỗi, em chưa hiểu rõ câu hỏi của Quý khách. Quý khách vui lòng chọn một trong các tùy chọn bên dưới hoặc liên hệ Chuyên viên tư vấn để được hỗ trợ tốt hơn ạ.", Sender.BOT);
+        setFlowState(FlowState.SHOWING_MENU);
+      });
+    }
+  };
+
+  // Helper function to find best matching knowledge item
+  const findBestMatch = (query: string): typeof KNOWLEDGE_BASE[string] | null => {
+    const keywords: Record<string, string[]> = {
+      'kichHoatThe': ['kích hoạt', 'kich hoat', 'active', 'thẻ', 'the', 'pin', 'mã pin', 'đổi pin', 'doi pin'],
+      'quenMatKhau': ['quên', 'quen', 'mật khẩu', 'mat khau', 'password', 'reset', 'đổi mật khẩu', 'doi mat khau'],
+      'dongThe': ['đóng thẻ', 'dong the', 'khóa thẻ', 'khoa the', 'close card', 'hủy thẻ', 'huy the'],
+      'sinhTracHoc': ['sinh trắc', 'sinh trac', 'vân tay', 'van tay', 'khuôn mặt', 'khuon mat', 'face id', 'fingerprint'],
+      'doiThe': ['đổi thẻ', 'doi the', 'thay thẻ', 'thay the', 'làm lại thẻ', 'lam lai the'],
+      'giaodichAnToan': ['an toàn', 'an toan', 'bảo mật', 'bao mat', 'lừa đảo', 'lua dao', 'scam', 'security'],
+      'Alilas': ['alilas', 'cài đặt', 'cai dat', 'install', 'app'],
+      'chiDuong': ['chỉ đường', 'chi duong', 'bản đồ', 'ban do', 'map', 'atm', 'pgd', 'phòng giao dịch', 'phong giao dich'],
+      'chuyenVien': ['chuyên viên', 'chuyen vien', 'tư vấn', 'tu van', 'hỗ trợ', 'ho tro', 'gặp', 'gap', 'liên hệ', 'lien he']
+    };
+
+    let bestMatch: string | null = null;
+    let maxScore = 0;
+
+    for (const [id, keywordList] of Object.entries(keywords)) {
+      let score = 0;
+      for (const keyword of keywordList) {
+        if (query.includes(keyword)) {
+          score += keyword.length; // Longer keyword = higher weight
+        }
+      }
+      if (score > maxScore) {
+        maxScore = score;
+        bestMatch = id;
+      }
+    }
+
+    return bestMatch ? KNOWLEDGE_BASE[bestMatch] : null;
   };
 
   return (
@@ -219,12 +273,12 @@ const App: React.FC = () => {
       </main>
 
       {/* Sticky Bottom Controls */}
-      <footer className="fixed bottom-0 left-0 w-full bg-white z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+      <footer className="fixed bottom-0 left-0 w-full z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
         <div className="max-w-3xl mx-auto">
           
-          {/* Toggle Button - Top - Compact */}
+          {/* Toggle Button - Top - Compact with Glass Effect */}
           {isControlsExpanded && (
-            <div className="flex justify-center py-1 border-b border-gray-200">
+            <div className="flex justify-center py-1 bg-white/50">
               <button 
                 onClick={() => setIsControlsExpanded(false)}
                 className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200"
@@ -236,7 +290,7 @@ const App: React.FC = () => {
 
           {/* Controls Section - Collapsible */}
           <div 
-            className={`transition-all duration-300 ease-in-out overflow-hidden ${
+            className={`transition-all duration-300 ease-in-out overflow-hidden bg-white/50 ${
               isControlsExpanded ? 'max-h-[45vh] opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
@@ -251,9 +305,9 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Expand Button - Show when collapsed - Compact */}
+          {/* Expand Button - Show when collapsed - Compact with Glass Effect */}
           {!isControlsExpanded && (
-            <div className="flex justify-center py-1 border-b border-gray-200">
+            <div className="flex justify-center py-1 bg-white/50">
               <button 
                 onClick={() => setIsControlsExpanded(true)}
                 className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200 animate-bounce"
@@ -264,7 +318,7 @@ const App: React.FC = () => {
           )}
 
           {/* Input Box - Always Visible */}
-          <div className="p-3 bg-white border-t border-gray-200">
+          <div className="p-3 bg-white/50">
             <div className="flex items-center gap-2 max-w-3xl mx-auto">
               <input
                 type="text"
