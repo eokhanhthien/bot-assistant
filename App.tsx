@@ -9,6 +9,8 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [flowState, setFlowState] = useState<FlowState>(FlowState.SHOWING_MENU);
   const [isTyping, setIsTyping] = useState(false);
+  const [isControlsExpanded, setIsControlsExpanded] = useState(true); // New state for controls visibility
+  const [userInput, setUserInput] = useState(''); // New state for user input
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false); // Add flag to prevent double initialization
 
@@ -108,15 +110,9 @@ const App: React.FC = () => {
        
        setIsTyping(false);
 
-       // If it is simply "Contact Support" or "Info", maybe skip feedback?
-       // Based on requirements: "Sau mỗi phần hướng dẫn xong, hỏi khách hàng thực hiện ổn hay chưa?"
-       // Excluding pure contact info might be good UX, but following strict instructions:
-       
        if (id === 'chuyenVien') {
-         // Special case for contact, just go to IDLE menu options
          setFlowState(FlowState.IDLE);
        } else {
-         // Ask for feedback
          setTimeout(() => {
              addMessage(APP_CONFIG.feedbackQuestion, Sender.BOT);
              setFlowState(FlowState.ASKING_FEEDBACK);
@@ -134,8 +130,6 @@ const App: React.FC = () => {
       addMessage("✅ Đã thực hiện thành công", Sender.USER);
       simulateBotTyping(() => {
         addMessage(APP_CONFIG.feedbackSuccess, Sender.BOT);
-        // Automatically go back to menu after success? Or offer choice?
-        // Prompt: "Nếu đã ổn quay lại menu chính cho khách hàng lựa chọn tiếp."
         setTimeout(() => {
             setFlowState(FlowState.SHOWING_MENU);
         }, 1500); 
@@ -144,10 +138,9 @@ const App: React.FC = () => {
       addMessage("❌ Chưa thực hiện được", Sender.USER);
       simulateBotTyping(() => {
         addMessage(APP_CONFIG.feedbackFailure, Sender.BOT);
-        // Show contact info automatically if failed
         setTimeout(() => {
            addMessage(APP_CONFIG.contactInfo, Sender.BOT);
-           setFlowState(FlowState.IDLE); // Show "Back to Menu" or "End"
+           setFlowState(FlowState.IDLE);
         }, 1000);
       });
     }
@@ -176,6 +169,19 @@ const App: React.FC = () => {
     simulateBotTyping(() => {
         addMessage(APP_CONFIG.goodbyeMessage, Sender.BOT);
         setFlowState(FlowState.ENDED);
+    });
+  };
+
+  const handleSendMessage = () => {
+    if (userInput.trim() === '') return;
+    
+    // Add user message
+    addMessage(userInput, Sender.USER);
+    setUserInput('');
+    
+    // Bot auto-reply (you can customize this logic)
+    simulateBotTyping(() => {
+      addMessage("Cảm ơn Quý khách đã gửi tin nhắn. Em đang xử lý yêu cầu của Quý khách.", Sender.BOT);
     });
   };
 
@@ -213,15 +219,70 @@ const App: React.FC = () => {
       </main>
 
       {/* Sticky Bottom Controls */}
-      <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 z-40 max-h-[50vh] overflow-y-auto scrollbar-hide shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-        <div className="max-w-3xl mx-auto p-4">
-          <Controls 
-            flowState={flowState}
-            onOptionSelect={handleOptionSelect}
-            onFeedback={handleFeedback}
-            onRestart={handleRestart}
-            onEndChat={handleEndChat}
-          />
+      <footer className="fixed bottom-0 left-0 w-full bg-white z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+        <div className="max-w-3xl mx-auto">
+          
+          {/* Toggle Button - Top */}
+          {isControlsExpanded && (
+            <div className="flex justify-center py-2 border-b border-gray-200">
+              <button 
+                onClick={() => setIsControlsExpanded(false)}
+                className="p-2 text-vietin-dark hover:text-vietin-red transition-all duration-200"
+              >
+                <i className="fa-solid fa-chevron-down text-2xl"></i>
+              </button>
+            </div>
+          )}
+
+          {/* Controls Section - Collapsible */}
+          <div 
+            className={`transition-all duration-300 ease-in-out overflow-hidden ${
+              isControlsExpanded ? 'max-h-[45vh] opacity-100' : 'max-h-0 opacity-0'
+            }`}
+          >
+            <div className="overflow-y-auto scrollbar-hide p-4 max-h-[40vh]">
+              <Controls 
+                flowState={flowState}
+                onOptionSelect={handleOptionSelect}
+                onFeedback={handleFeedback}
+                onRestart={handleRestart}
+                onEndChat={handleEndChat}
+              />
+            </div>
+          </div>
+
+          {/* Expand Button - Show when collapsed */}
+          {!isControlsExpanded && (
+            <div className="flex justify-center py-2 border-b border-gray-200">
+              <button 
+                onClick={() => setIsControlsExpanded(true)}
+                className="p-2 text-vietin-dark hover:text-vietin-red transition-all duration-200 animate-bounce"
+              >
+                <i className="fa-solid fa-chevron-up text-2xl"></i>
+              </button>
+            </div>
+          )}
+
+          {/* Input Box - Always Visible */}
+          <div className="p-3 bg-white border-t border-gray-200">
+            <div className="flex items-center gap-2 max-w-3xl mx-auto">
+              <input
+                type="text"
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                placeholder="Nhập tin nhắn của bạn..."
+                className="flex-1 px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-vietin-dark focus:border-transparent text-sm"
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={userInput.trim() === ''}
+                className="w-12 h-12 rounded-full bg-vietin-red text-white hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center shadow-md hover:scale-110 active:scale-95"
+              >
+                <i className="fa-solid fa-paper-plane text-lg"></i>
+              </button>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
