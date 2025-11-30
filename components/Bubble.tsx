@@ -111,50 +111,44 @@ const SlideViewer: React.FC<{ slidesId: string; totalSlides: number; title: stri
 
   const src = `https://docs.google.com/presentation/d/${slidesId}/embed?start=false&loop=false&delayms=3000&slide=id.p${currentSlide > 1 ? currentSlide : ''}&rm=minimal`;
 
+  // Handle ESC key to close fullscreen
+  React.useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isFullscreen]);
+
   const ViewerContent = ({ full = false }) => (
      <div className={`relative w-full ${full ? 'h-full flex flex-col items-center justify-center' : ''}`}>
         
-        {/* Header for Fullscreen */}
-        {full && (
-          <div className="absolute top-5 left-5 bg-vietin-dark/90 text-white px-4 py-2 rounded-full z-50 backdrop-blur-sm font-semibold">
-            {title} - {currentSlide}/{totalSlides}
-          </div>
-        )}
+        {/* Header for Fullscreen - REMOVED as requested */}
         
         {/* Iframe Container */}
-        <div className={`relative bg-black rounded-lg overflow-hidden shadow-lg ${full ? 'w-[95%] h-[85vh] max-w-[1600px]' : 'w-full aspect-video'}`}>
+        <div className={`relative bg-black rounded-lg overflow-hidden shadow-lg ${full ? 'w-full h-full' : 'w-full aspect-video'}`}>
            <iframe 
              src={src} 
              className="w-full h-full border-0"
              allowFullScreen
              title="Slide Content"
            />
-           
-           {/* Navigation Overlays (Clickable areas) */}
-           <div className="absolute inset-y-0 left-0 w-16 flex items-center justify-center z-10 opacity-0 hover:opacity-100 transition-opacity">
-               <button onClick={(e) => { e.stopPropagation(); prevSlide(); }} className="bg-vietin-dark/80 text-white p-3 rounded-full hover:bg-vietin-red transition-colors">
-                 <i className="fa-solid fa-chevron-left"></i>
-               </button>
-           </div>
-           <div className="absolute inset-y-0 right-0 w-16 flex items-center justify-center z-10 opacity-0 hover:opacity-100 transition-opacity">
-               <button onClick={(e) => { e.stopPropagation(); nextSlide(); }} className="bg-vietin-dark/80 text-white p-3 rounded-full hover:bg-vietin-red transition-colors">
-                 <i className="fa-solid fa-chevron-right"></i>
-               </button>
-           </div>
         </div>
 
         {/* Controls Bar */}
-        <div className={`flex items-center justify-between mt-2 ${full ? 'w-[95%] max-w-[1600px] text-white' : 'w-full text-vietin-dark'}`}>
+        <div className={`flex items-center justify-between mt-2 ${full ? 'w-full px-2 pb-2' : 'w-full text-vietin-dark'}`}>
            <div className="flex gap-2">
-             <button onClick={prevSlide} disabled={currentSlide === 1} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center">
+             <button onClick={prevSlide} disabled={currentSlide === 1} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center shadow-md">
                 <i className="fa-solid fa-chevron-left"></i>
              </button>
-             <button onClick={nextSlide} disabled={currentSlide === totalSlides} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center">
+             <button onClick={nextSlide} disabled={currentSlide === totalSlides} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center shadow-md">
                 <i className="fa-solid fa-chevron-right"></i>
              </button>
            </div>
            
-           <span className="font-bold">
+           <span className={`font-bold ${full ? 'text-vietin-dark' : ''}`}>
              {currentSlide} / {totalSlides}
            </span>
 
@@ -176,11 +170,40 @@ const SlideViewer: React.FC<{ slidesId: string; totalSlides: number; title: stri
       <ViewerContent />
       {/* Fullscreen Modal */}
       {isFullscreen && (
-        <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm p-4 flex items-center justify-center animate-fade-in">
-           <button onClick={() => setIsFullscreen(false)} className="absolute top-5 right-5 w-12 h-12 bg-vietin-red text-white rounded-full flex items-center justify-center text-xl hover:rotate-90 transition-transform shadow-lg z-[10000]">
-             <i className="fa-solid fa-xmark"></i>
-           </button>
-           <ViewerContent full={true} />
+        <div className="fixed inset-0 z-[9999] bg-vietin-light flex flex-col animate-fade-in overflow-hidden">
+           {/* Iframe Container - Full Screen with scaling */}
+           <div className="relative flex-1 w-full flex items-center justify-center bg-vietin-light overflow-hidden">
+             <iframe 
+               src={src} 
+               className="w-[177.78vh] h-full border-0"
+               style={{
+                 minWidth: '100%',
+                 minHeight: '56.25vw', // 16:9 aspect ratio
+               }}
+               allowFullScreen
+               title="Slide Content"
+             />
+           </div>
+
+           {/* Controls Bar - Fixed Bottom */}
+           <div className="flex items-center justify-between p-3 bg-vietin-light text-vietin-dark w-full border-t border-vietin-dark/20">
+             <div className="flex gap-2">
+               <button onClick={prevSlide} disabled={currentSlide === 1} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center shadow-md">
+                  <i className="fa-solid fa-chevron-left"></i>
+               </button>
+               <button onClick={nextSlide} disabled={currentSlide === totalSlides} className="w-10 h-10 rounded-full bg-vietin-dark text-white disabled:opacity-50 hover:bg-vietin-red transition-colors flex items-center justify-center shadow-md">
+                  <i className="fa-solid fa-chevron-right"></i>
+               </button>
+             </div>
+             
+             <span className="font-bold">
+               {currentSlide} / {totalSlides}
+             </span>
+
+             <button onClick={() => setIsFullscreen(false)} className="w-10 h-10 rounded-full bg-vietin-red text-white hover:scale-110 transition-transform flex items-center justify-center shadow-md">
+                <i className="fa-solid fa-compress"></i>
+             </button>
+           </div>
         </div>
       )}
     </>

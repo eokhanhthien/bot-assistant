@@ -5,7 +5,7 @@ import { KnowledgeItem } from './types';
 // ==========================================
 
 export const APP_CONFIG = {
-  botName: "Trợ lý hỗ trợ giải đáp thắc mắc VietinBank",
+  botName: "Trợ lý giải đáp thắc mắc - VietinBank CN Cà Mau",
   welcomeMessage: "Trợ lý hỗ trợ giải đáp thắc mắc của VietinBank xin kính chào Quý khách.\nEm có thể hỗ trợ gì cho Quý khách ạ?",
   safetyWarning: "", // Included in flow manually if needed
   feedbackQuestion: "Quý khách đã thực hiện thành công chưa ạ? Quý khách có cần em hỗ trợ thêm gì không?",
