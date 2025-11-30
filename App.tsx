@@ -222,14 +222,14 @@ const App: React.FC = () => {
       <footer className="fixed bottom-0 left-0 w-full bg-white z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
         <div className="max-w-3xl mx-auto">
           
-          {/* Toggle Button - Top */}
+          {/* Toggle Button - Top - Compact */}
           {isControlsExpanded && (
-            <div className="flex justify-center py-2 border-b border-gray-200">
+            <div className="flex justify-center py-1 border-b border-gray-200">
               <button 
                 onClick={() => setIsControlsExpanded(false)}
-                className="p-2 text-vietin-dark hover:text-vietin-red transition-all duration-200"
+                className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200"
               >
-                <i className="fa-solid fa-chevron-down text-2xl"></i>
+                <i className="fa-solid fa-chevron-down text-lg"></i>
               </button>
             </div>
           )}
@@ -251,14 +251,14 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Expand Button - Show when collapsed */}
+          {/* Expand Button - Show when collapsed - Compact */}
           {!isControlsExpanded && (
-            <div className="flex justify-center py-2 border-b border-gray-200">
+            <div className="flex justify-center py-1 border-b border-gray-200">
               <button 
                 onClick={() => setIsControlsExpanded(true)}
-                className="p-2 text-vietin-dark hover:text-vietin-red transition-all duration-200 animate-bounce"
+                className="p-1 text-vietin-dark hover:text-vietin-red transition-all duration-200 animate-bounce"
               >
-                <i className="fa-solid fa-chevron-up text-2xl"></i>
+                <i className="fa-solid fa-chevron-up text-lg"></i>
               </button>
             </div>
           )}
