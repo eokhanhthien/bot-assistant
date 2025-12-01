@@ -209,15 +209,22 @@ const App: React.FC = () => {
   // Helper function to find best matching knowledge item
   const findBestMatch = (query: string): typeof KNOWLEDGE_BASE[string] | null => {
     const keywords: Record<string, string[]> = {
-      'kichHoatThe': ['kích hoạt', 'kich hoat', 'active', 'thẻ', 'the', 'pin', 'mã pin', 'đổi pin', 'doi pin'],
-      'quenMatKhau': ['quên', 'quen', 'mật khẩu', 'mat khau', 'password', 'reset', 'đổi mật khẩu', 'doi mat khau'],
+      'kichHoatThe': ['kích hoạt', 'kich hoat', 'active', 'thẻ', 'the', 'pin', 'mã pin', 'đổi pin', 'doi pin', 'phát hành', 'phat hanh', 'mở thẻ', 'mo the','thẻ vật lý','the vat ly', 'thẻ phi vật lý','the phi vat ly'],
+      'quenMatKhau': ['quên', 'quen', 'mật khẩu', 'mat khau', 'password', 'reset', 'đổi mật khẩu', 'doi mat khau', 'cấp lại', 'cap lai'],
       'dongThe': ['đóng thẻ', 'dong the', 'khóa thẻ', 'khoa the', 'close card', 'hủy thẻ', 'huy the'],
-      'sinhTracHoc': ['sinh trắc', 'sinh trac', 'vân tay', 'van tay', 'khuôn mặt', 'khuon mat', 'face id', 'fingerprint'],
+      'sinhTracHoc': ['sinh trắc', 'sinh trac', 'vân tay', 'van tay', 'khuôn mặt', 'khuon mat', 'face id', 'fingerprint', 'đăng ký sinh trắc', 'dang ky sinh trac'],
       'doiThe': ['đổi thẻ', 'doi the', 'thay thẻ', 'thay the', 'làm lại thẻ', 'lam lai the'],
-      'giaodichAnToan': ['an toàn', 'an toan', 'bảo mật', 'bao mat', 'lừa đảo', 'lua dao', 'scam', 'security'],
-      'Alilas': ['alilas', 'cài đặt', 'cai dat', 'install', 'app'],
-      'chiDuong': ['chỉ đường', 'chi duong', 'bản đồ', 'ban do', 'map', 'atm', 'pgd', 'phòng giao dịch', 'phong giao dich'],
-      'chuyenVien': ['chuyên viên', 'chuyen vien', 'tư vấn', 'tu van', 'hỗ trợ', 'ho tro', 'gặp', 'gap', 'liên hệ', 'lien he']
+      'giaodichAnToan': ['an toàn', 'an toan', 'bảo mật', 'bao mat', 'lừa đảo', 'lua dao', 'scam', 'security', 'giao dịch an toàn', 'giao dich an toan'],
+      'Alilas': ['alilas', 'cài đặt alilas', 'cai dat alilas', 'install alilas', 'app alilas'],
+      'chiDuong': ['chỉ đường', 'chi duong', 'bản đồ', 'ban do', 'map', 'atm', 'pgd', 'phòng giao dịch', 'phong giao dich', 'địa chỉ', 'dia chi'],
+      'nangHanMucTheTinDung': ['nâng hạn mức', 'nang han muc', 'tăng hạn mức', 'tang han muc', 'thẻ tín dụng', 'the tin dung', 'credit card', 'limit', 'hạn mức', 'han muc'],
+      'installIpay': ['cài đặt ipay', 'cai dat ipay', 'install ipay', 'tải ipay', 'tai ipay', 'download ipay', 'đăng nhập ipay', 'dang nhap ipay', 'hướng dẫn ipay', 'huong dan ipay'],
+      'capLaiTenDangNhapIpay': ['cấp lại tên đăng nhập', 'cap lai ten dang nhap', 'lấy lại username', 'lay lai username', 'quên tên đăng nhập', 'quen ten dang nhap', 'forgot username'],
+      'kichHoatIpayLanDau': ['kích hoạt ipay lần đầu', 'kich hoat ipay lan dau', 'sử dụng ipay lần đầu', 'su dung ipay lan dau', 'first time ipay', 'đăng ký ipay', 'dang ky ipay'],
+      'ottVoice': ['ott voice', 'thông báo giọng nói', 'thong bao giong noi', 'voice notification', 'số dư', 'so du', 'balance notification', 'cài đặt ott', 'cai dat ott'],
+      'thanhToanHoaDon': ['thanh toán hóa đơn', 'thanh toan hoa don', 'pay bill', 'payment', 'hóa đơn', 'hoa don', 'điện', 'dien', 'nước', 'nuoc', 'internet', 'bill'],
+      'moTaiKhoan': ['mở tài khoản', 'mo tai khoan', 'open account', 'đăng ký tài khoản', 'dang ky tai khoan', 'cccd', 'căn cước', 'can cuoc', 'tài khoản thanh toán', 'tai khoan thanh toan', 'mở tài khoản bằng cccd', 'mo tai khoan bang cccd'],
+      'chuyenVien': ['chuyên viên', 'chuyen vien', 'tư vấn', 'tu van', 'hỗ trợ', 'ho tro', 'gặp', 'gap', 'liên hệ', 'lien he', 'support', 'contact']
     };
 
     let bestMatch: string | null = null;

@@ -110,9 +110,76 @@ export const KNOWLEDGE_BASE: Record<string, KnowledgeItem> = {
       content: "Quý khách có thể xem bản đồ và chỉ đường tới PGD & ATM dưới đây:",
       mapLink: "https://eokhanhthien.github.io/atm-location/"
   },
+  "nangHanMucTheTinDung": {
+    id: "nangHanMucTheTinDung",
+    title: "9. Nâng hạn mức thẻ tín dụng",
+    content: "Quý khách có thể xem video hướng dẫn nâng hạn mức thẻ tín dụng dưới đây:",
+    videoLink: "https://www.youtube.com/watch?v=Jrmz_Z9Uqqs"
+  },
+  "installIpay": {
+    id: "installIpay",
+    title: "10. Hướng dẫn cài đặt và đăng nhập ứng dụng VietinBank iPay Mobile",
+    content: "Quý khách có thể xem video hướng dẫn cài đặt và đăng nhập ứng dụng VietinBank iPay dưới đây:",
+    videoLink: "https://www.youtube.com/watch?v=bzKxHlFYelE"
+  },
+  "capLaiTenDangNhapIpay": {
+    id: "capLaiTenDangNhapIpay",
+    title: "11. Hướng dẫn cấp lại tên đăng nhập tên đăng nhập VietinBank iPay Mobile",
+    content: "Quý khách có thể xem video hướng dẫn cấp lại tên đăng nhập tên đăng nhập VietinBank iPay Mobile dưới đây:",
+    videoLink: "https://www.youtube.com/watch?v=AUU8Kqeq1NY"
+  },
+  "kichHoatIpayLanDau": {
+    id: "kichHoatIpayLanDau",
+    title: "12. Hướng dẫn kích hoạt, sử dụng ứng dụng VietinBank iPay lần đầu",
+    content: "Quý khách có thể xem video hướng dẫn kích hoạt, sử dụng ứng dụng VietinBank iPay lần đầu:",
+    steps: [
+      { step: "B1", content: "Đăng nhập VietinBank iPay (Tên đăng nhập và mật khẩu được gửi về số điện thoại khách hàng khi đăng ký dịch vụ)" },
+      { step: "B2", content: "Chụp 2 mặt giấy tờ tùy thân theo hướng dẫn \n Chụp ảnh chân dung \n Thực hiện NFC đọc thông tin chip Căn cước công dân \n Xác nhận thông tin" },
+      { step: "B3", content: "Thực hiện đổi mật khẩu: Nhập lại mật khẩu hiện tại, mật khẩu mới theo hướng dẫn" },
+      { step: "B4", content: "Xác nhận mã OTP: Nhập mã OTP để xác nhận yêu cầu cấp lại mật khẩu" },
+      { step: "B5", content: "Khách hàng đăng nhập bằng mật khẩu mới vừa thực hiện đổi thành công" },
+    ],
+    videoLink: "https://www.youtube.com/watch?v=DCxpAr0HiX0"
+  },
+  "ottVoice": {
+    id: "ottVoice",
+    title: "13. Hướng dẫn cài đặt thông báo số dư qua giọng nói OTT Voice",
+    content: "Quý khách có thể xem video hướng dẫn cài đặt thông báo số dư qua giọng nói dưới đây:",
+    videoLink: "https://www.youtube.com/watch?v=y6wUrQnp3AU"
+  },
+  "thanhToanHoaDon": {
+    id: "thanhToanHoaDon",
+    title: "14. Hướng dẫn thanh toán hóa đơn trên VietinBank iPay",
+    content: "Quý khách có thể xem video hướng dẫn thanh toán hóa đơn trên VietinBank iPay dưới đây:",
+    steps: [
+      { step: "B1", content: "Qúy khách đăng nhập ứng dụng Ngân hàng số VietinBank iPay Mobile, chọn **Thanh toán hóa đơn**" },
+      { step: "B2", content: "Chọn dịch vụ cần thanh toán (Điện/Nước/Internet...)" },
+      { step: "B3", content: "Nhập thông tin theo yêu cầu tại màn hình và ấn truy vấn hóa đơn" },
+      { step: "B4", content: "Xác thực thông tin, nhập mã xác thực và hoàn tất giao dịch" },
+    ],
+    videoLink: "https://www.youtube.com/watch?v=qXxkWPLXpBc"
+  },
+  "moTaiKhoan": {
+    id: "moTaiKhoan",
+    title: "15. Hướng dẫn mở tài khoản thanh toán bằng CCCD trên VietinBank iPay",
+    content: "Quý khách có thể xem video hướng dẫn mở tài khoản thanh toán bằng CCCD trên VietinBank iPay dưới đây:",
+    steps: [
+      { step: "B1", content: "Tải ứng dụng Ngân hàng số VietinBank iPay Mobile" },
+      { step: "B2", content: "Mở ứng dụng VietinBank iPay chọn **Chưa có tên đăng nhập/mật khẩu** \n Chọn **Quý khách chưa có thông tin tại VietinBank**" },
+      { step: "B3", content: "Nhập số điện thoại đang sử dụng và Nhập mã OTP gửi vào điện thoại" },
+      { step: "B4", content: "Chọn **Mở tài khoản mới và thẻ khác**" },
+      { step: "B5", content: "Nhập số CCCD gắn chip và chọn **Bắt đầu chụp**" },
+      { step: "B6", content: "Chụp mặt trước, mặt sau của CCCD và Chụp khuôn mặt" },
+      { step: "B7", content: "Chọn **Đã hiểu và bắt đầu đọc thông tin**" },
+      { step: "B8", content: "Thực hiện NFC" },
+      { step: "B9", content: "Chọn **Tiếp tục mở tài khoản & cập nhật hồ sơ** và thực hiện theo hướng dẫn" },
+      { step: "B10", content: "Nhận thông báo user/mật khẩu đăng nhập lần đầu qua SMS. Thực hiện đăng nhập iPay và đổi mật khẩu lần đầu để sử dụng." },
+    ],
+    videoLink: "https://www.youtube.com/watch?v=4ODhAqhT9Cw"
+  },
   "chuyenVien": {
       id: "chuyenVien",
-      title: "9. Gặp chuyên viên tư vấn",
+      title: "Gặp chuyên viên tư vấn",
       content: APP_CONFIG.contactInfo
   }
 };
